@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Backend for User Management system using Node.js, Express, and MongoDB",
   "main": "server.ts",
+  "type": "module", 
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.ts",
