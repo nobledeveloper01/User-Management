@@ -10,6 +10,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
   const [value, setValue] = useState('');
   // Initialize with undefined explicitly
   const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  
 
   useEffect(() => {
     if (timerRef.current) {
