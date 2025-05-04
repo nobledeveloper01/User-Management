@@ -13,10 +13,25 @@ import { seedAdmin, seedUsers } from './seed';
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+// Define allowed origins (you can add more if needed)
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://user-management-five-iota.vercel.app',
+];
+
+// Setup CORS middleware
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
+
+// Parse JSON requests
 app.use(express.json());
 
-// Connect to MongoDB and seed initial data
+// Connect to MongoDB and seed data
 connectMongoDB();
 seedAdmin();
 seedUsers();
@@ -33,7 +48,7 @@ const server = new ApolloServer({
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string; role: string };
-      return { user: decoded }; // context.user -> { id, role }
+      return { user: decoded };
     } catch (err) {
       console.error('JWT verification failed:', err);
       return {};
@@ -41,13 +56,15 @@ const server = new ApolloServer({
   },
 });
 
-// Start the server
+// Start server function
 async function startServer() {
   await server.start();
-  server.applyMiddleware({ app });
+  server.applyMiddleware({ app, cors: false }); // Disable Apollo CORS so Express CORS applies
 
   const PORT = process.env.PORT || 8000;
-  app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}${server.graphqlPath}`));
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://localhost:${PORT}${server.graphqlPath}`);
+  });
 }
 
 startServer();
