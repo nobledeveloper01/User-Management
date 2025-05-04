@@ -54,7 +54,7 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
   const onSubmit = async (data: FormData) => {
     try {
       if (user) {
-        const { ...updateData } = data;
+        const {password, ...updateData } = data;
         await updateUser({
           variables: { id: user.id, input: updateData },
           refetchQueries: ["GetUsers"],
@@ -66,7 +66,7 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
           return;
         }
         await createUser({
-          variables: { input: data },
+          variables: { input: { ...data } }, 
           refetchQueries: ["GetUsers"],
         });
         showToast('User created successfully', "success");
