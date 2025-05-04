@@ -5,24 +5,24 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  isLoading: boolean; // Added here
 }
 
 export default function Pagination({ 
   currentPage, 
   totalPages, 
-  onPageChange 
+  onPageChange,
+  isLoading // Added here
 }: PaginationProps) {
-  // Generate page numbers with limits for large page counts
   const getVisiblePages = () => {
-    const maxVisible = 5; // Show max 5 page buttons
+    const maxVisible = 5;
     let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
     const end = Math.min(totalPages, start + maxVisible - 1);
-    
-    // Adjust if we're at the beginning or end
+
     if (end - start + 1 < maxVisible) {
       start = Math.max(1, end - maxVisible + 1);
     }
-    
+
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   };
 
@@ -37,14 +37,13 @@ export default function Pagination({
     >
       <button
         onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
+        disabled={currentPage === 1 || isLoading} // Use isLoading here
         className="p-2 bg-gray-700 rounded-md hover:bg-gray-600 disabled:bg-gray-500 text-white disabled:cursor-not-allowed"
         aria-label="Previous page"
       >
         &lt;
       </button>
 
-      {/* Show first page if not in visible range */}
       {!visiblePages.includes(1) && (
         <>
           <PageButton 
@@ -65,7 +64,6 @@ export default function Pagination({
         />
       ))}
 
-      {/* Show last page if not in visible range */}
       {!visiblePages.includes(totalPages) && (
         <>
           {visiblePages[visiblePages.length - 1] < totalPages - 1 && (
@@ -81,7 +79,7 @@ export default function Pagination({
 
       <button
         onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        disabled={currentPage === totalPages || isLoading} // Use isLoading here
         className="p-2 bg-gray-700 rounded-md hover:bg-gray-600 disabled:bg-gray-500 text-white disabled:cursor-not-allowed"
         aria-label="Next page"
       >
