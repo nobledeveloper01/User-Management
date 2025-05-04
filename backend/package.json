@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Backend for User Management system using Node.js, Express, and MongoDB",
   "main": "server.ts",
-  "type": "module", 
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.ts",
-    "start": "node server.ts"
+     "start": "ts-node server.ts"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.9",
-    "@types/node": "^22.15.3"
+    "@types/node": "^22.15.3",
+    "ts-node": "^10.9.2"
   }
 }
