@@ -16,11 +16,6 @@ export const useAuth = () => {
     if (token) {
       const decodedUser = getUserFromToken(token);
       if (decodedUser) {
-        console.log('Authenticated user:', {
-          id: decodedUser.id,
-          role: decodedUser.role,
-          isAdmin: decodedUser.role === 'ADMIN'
-        });
         setUser(decodedUser);
       }
     }

@@ -115,7 +115,6 @@ export default function Dashboard() {
         throw new Error("No data received");
       }
     } catch (err) {
-      console.error('Export error:', err);
       showToast("Failed to export data", "error");
     } finally {
       setExportLoading(false);

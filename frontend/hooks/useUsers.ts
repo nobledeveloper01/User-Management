@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { GET_USERS } from '@/lib/queries';
 import { UserConnection } from '@/types';
+import { showToast } from '@/components/ShowToast';
 
 // In your useUsers hook
 export const useUsers = (
@@ -21,9 +22,8 @@ export const useUsers = (
     fetchPolicy: 'network-only',
     notifyOnNetworkStatusChange: true,
     onError: (err) => {
-      console.error('GetUsers query failed:', err);
       if (err.message.includes('Unauthorized')) {
-        console.warn('Unauthorized access to users query. Please log in with appropriate credentials.');
+        showToast('Unauthorized access to users query. Please log in with appropriate credentials.', "error");
       }
     },
   });
