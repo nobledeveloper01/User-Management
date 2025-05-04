@@ -5,17 +5,18 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
-  isLoading: boolean; // Added here
+  isLoading: boolean;
 }
 
-export default function Pagination({ 
-  currentPage, 
-  totalPages, 
+export default function Pagination({
+  currentPage,
+  totalPages,
   onPageChange,
-  isLoading // Added here
+  isLoading,
 }: PaginationProps) {
   const getVisiblePages = () => {
-    const maxVisible = 5;
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+    const maxVisible = isMobile ? 3 : 5;
     let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
     const end = Math.min(totalPages, start + maxVisible - 1);
 
@@ -33,11 +34,11 @@ export default function Pagination({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.3 }}
-      className="flex items-center gap-2"
+      className="flex flex-wrap justify-center items-center gap-1 sm:gap-2"
     >
       <button
         onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1 || isLoading} // Use isLoading here
+        disabled={currentPage === 1 || isLoading}
         className="p-2 bg-gray-700 rounded-md hover:bg-gray-600 disabled:bg-gray-500 text-white disabled:cursor-not-allowed"
         aria-label="Previous page"
       >
@@ -46,12 +47,8 @@ export default function Pagination({
 
       {!visiblePages.includes(1) && (
         <>
-          <PageButton 
-            page={1} 
-            currentPage={currentPage}
-            onClick={() => onPageChange(1)}
-          />
-          {visiblePages[0] > 2 && <span className="px-2">...</span>}
+          <PageButton page={1} currentPage={currentPage} onClick={() => onPageChange(1)} />
+          {visiblePages[0] > 2 && <span className="px-1 sm:px-2">...</span>}
         </>
       )}
 
@@ -67,7 +64,7 @@ export default function Pagination({
       {!visiblePages.includes(totalPages) && (
         <>
           {visiblePages[visiblePages.length - 1] < totalPages - 1 && (
-            <span className="px-2">...</span>
+            <span className="px-1 sm:px-2">...</span>
           )}
           <PageButton
             page={totalPages}
@@ -79,7 +76,7 @@ export default function Pagination({
 
       <button
         onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages || isLoading} // Use isLoading here
+        disabled={currentPage === totalPages || isLoading}
         className="p-2 bg-gray-700 rounded-md hover:bg-gray-600 disabled:bg-gray-500 text-white disabled:cursor-not-allowed"
         aria-label="Next page"
       >
@@ -101,9 +98,9 @@ function PageButton({ page, currentPage, onClick }: PageButtonProps) {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       onClick={onClick}
-      className={`w-10 h-10 flex items-center justify-center rounded-md ${
-        page === currentPage 
-          ? 'bg-orange-500 text-white font-medium' 
+      className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-md text-sm sm:text-base ${
+        page === currentPage
+          ? 'bg-orange-500 text-white font-medium'
           : 'bg-gray-700 text-white hover:bg-gray-600'
       } transition-all duration-200`}
       aria-label={`Page ${page}`}
