@@ -1,14 +1,19 @@
 {
     "compilerOptions": {
       "target": "ESNext",
-      "module": "CommonJS", // Use CommonJS if you want to run with Node.js
+      "module": "ESNext",
+      "moduleResolution": "node",
       "esModuleInterop": true,
-      "skipLibCheck": true,
-      "strict": true,
+      "allowSyntheticDefaultImports": true,
+      "resolveJsonModule": true,
+      "strict": true,                       // ✅ Enables strict type checking
       "forceConsistentCasingInFileNames": true,
-      "outDir": "./dist", // Output directory for compiled files
-      "rootDir": "./" // Set this to the root directory
+      "skipLibCheck": true
+    },
+    "ts-node": {
+      "esm": true
     },
     "include": ["*.ts", "graphql/**/*.ts", "middleware/**/*.ts", "models/**/*.ts", "utils/**/*.ts", "seed.ts"], // Adjust based on your structure
     "exclude": ["node_modules"]
-  }
+  
+}
