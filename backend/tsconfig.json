@@ -4,16 +4,15 @@
       "module": "ESNext",
       "moduleResolution": "node",
       "esModuleInterop": true,
+      "moduleDetection": "force",
+      "strict": true,
       "allowSyntheticDefaultImports": true,
-      "resolveJsonModule": true,
-      "strict": true,                       // ✅ Enables strict type checking
-      "forceConsistentCasingInFileNames": true,
-      "skipLibCheck": true
+      "skipLibCheck": true,
+      "resolveJsonModule": true
     },
     "ts-node": {
-      "esm": true
-    },
-    "include": ["*.ts", "graphql/**/*.ts", "middleware/**/*.ts", "models/**/*.ts", "utils/**/*.ts", "seed.ts"], // Adjust based on your structure
-    "exclude": ["node_modules"]
+      "esm": true,
+      "experimentalSpecifierResolution": "node"
+    }
+  }
   
-}
