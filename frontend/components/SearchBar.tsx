@@ -8,7 +8,8 @@ interface SearchBarProps {
 
 export default function SearchBar({ onSearch }: SearchBarProps) {
   const [value, setValue] = useState('');
-  const timerRef = useRef<NodeJS.Timeout>();
+  // Initialize with undefined explicitly
+  const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
     if (timerRef.current) {
