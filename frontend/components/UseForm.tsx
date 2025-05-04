@@ -54,7 +54,7 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
   const onSubmit = async (data: FormData) => {
     try {
       if (user) {
-        const { password, ...updateData } = data;
+        const { ...updateData } = data;
         await updateUser({
           variables: { id: user.id, input: updateData },
           refetchQueries: ["GetUsers"],
