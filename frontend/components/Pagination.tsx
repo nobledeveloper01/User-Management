@@ -16,7 +16,7 @@ export default function Pagination({
   const getVisiblePages = () => {
     const maxVisible = 5; // Show max 5 page buttons
     let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-    let end = Math.min(totalPages, start + maxVisible - 1);
+    const end = Math.min(totalPages, start + maxVisible - 1);
     
     // Adjust if we're at the beginning or end
     if (end - start + 1 < maxVisible) {

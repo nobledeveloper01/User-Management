@@ -30,7 +30,7 @@ export default function Signup() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const result = await signup({
+      await signup({
         variables: {
           input: {
             name: data.name,

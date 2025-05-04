@@ -27,6 +27,10 @@ type User = {
   profilePhoto?: string;
 };
 
+interface ErrorWithMessage {
+  message?: string;
+}
+
 export default function Dashboard() {
   const [logoutLoading, setLogoutLoading] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
@@ -46,7 +50,6 @@ export default function Dashboard() {
     loading, 
     error, 
     totalPages,
-    totalCount 
   } = useUsers(
     page, 
     limit, 
@@ -84,7 +87,8 @@ export default function Dashboard() {
         router.push("/login");
       }, 1000);
     } catch (err) {
-      showToast("Failed to logout", "error");
+      const error = err as ErrorWithMessage; // Type assertion
+      showToast(error.message || "Failed to logout", "error");
       setLogoutLoading(false);
     }
   };
