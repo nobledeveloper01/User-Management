@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",
+      "module": "CommonJS", // Use CommonJS if you want to run with Node.js
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "strict": true,
+      "forceConsistentCasingInFileNames": true,
+      "outDir": "./dist", // Output directory for compiled files
+      "rootDir": "./" // Set this to the root directory
+    },
+    "include": ["*.ts", "graphql/**/*.ts", "middleware/**/*.ts", "models/**/*.ts", "utils/**/*.ts", "seed.ts"], // Adjust based on your structure
+    "exclude": ["node_modules"]
+  }
