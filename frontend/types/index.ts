@@ -2,7 +2,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  location: string;
+  location?: string;
   joined?: string;
   role: string;
   status: string;

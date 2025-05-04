@@ -12,7 +12,7 @@ type FormData = {
   name: string;
   email: string;
   password?: string;
-  location: string;
+  location?: string;
   profilePhoto: string;
   role: string;
   status: string;
