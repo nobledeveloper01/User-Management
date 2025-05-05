@@ -23,7 +23,7 @@ export default function Login() {
     formState: { errors },
   } = useForm<FormData>();
   const [login, { loading, error }] = useMutation(LOGIN);
-  const router = useRouter();
+  // const router = useRouter();
 
   const onSubmit = async (data: FormData) => {
     try {
