@@ -42,7 +42,10 @@ export default function Login() {
 
       localStorage.setItem("token", token);
       localStorage.setItem("email", user.email);
+      
+      // Wait for the Apollo Client store to reset
       await client.resetStore();
+      
       showToast("Login successful! Redirecting...", "success");
       router.push("/dashboard");
     } catch (err) {
@@ -179,7 +182,6 @@ export default function Login() {
             <Link href="/signup" className="text-green-200 hover:underline">
               Register here
             </Link>
-            
           </p>
         </motion.div>
       </motion.div>

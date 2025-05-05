@@ -35,27 +35,28 @@ export default function Dashboard() {
   const [logoutLoading, setLogoutLoading] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
   const router = useRouter();
-  const { user } = useAuth();
-  const userRole = user?.role === "ADMIN" ? "ADMIN" : "USER";
+  const { user, loading: authLoading, role: userRole } = useAuth();
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [filterRole, setFilterRole] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
-  
-  // Use the users directly from the hook (no client-side filtering needed)
-  const { 
-    users, 
-    loading, 
-    error, 
+
+  // Always call useUsers, but skip the query if auth is loading
+  const {
+    users,
+    loading,
+    error,
     totalPages,
   } = useUsers(
-    page, 
-    limit, 
+    page,
+    limit,
     search,
     filterRole === "All" ? undefined : filterRole,
-    filterStatus === "All" ? undefined : filterStatus
+    filterStatus === "All" ? undefined : filterStatus,
+    authLoading // Skip the query while auth is loading
   );
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -87,7 +88,7 @@ export default function Dashboard() {
         router.push("/login");
       }, 1000);
     } catch (err) {
-      const error = err as ErrorWithMessage; // Type assertion
+      const error = err as ErrorWithMessage;
       showToast(error.message || "Failed to logout", "error");
       setLogoutLoading(false);
     }
@@ -101,13 +102,12 @@ export default function Dashboard() {
         variables: {
           search,
           role: filterRole === "All" ? undefined : filterRole,
-          status: filterStatus === "All" ? undefined : filterStatus
+          status: filterStatus === "All" ? undefined : filterStatus,
         },
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       });
-  
+
       if (data?.exportUsers) {
-        // Convert to CSV on the client side
         const csvContent = convertToCSV(data.exportUsers);
         downloadCSV(csvContent, "users_export.csv");
         showToast("Export completed successfully", "success");
@@ -121,8 +121,7 @@ export default function Dashboard() {
       setExportLoading(false);
     }
   };
-  
-  // Keep your existing convertToCSV and downloadCSV functions
+
   const convertToCSV = (data: User[]) => {
     const headers = Object.keys(data[0]).join(',');
     const rows = data.map(user =>
@@ -132,7 +131,7 @@ export default function Dashboard() {
     );
     return [headers, ...rows].join('\n');
   };
-  
+
   const downloadCSV = (content: string, fileName: string) => {
     const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -146,6 +145,16 @@ export default function Dashboard() {
   };
 
   const LoggedInEmail = localStorage.getItem("email") || "N/A";
+  const displayRole = userRole || "N/A";
+
+  // Show a loading state while auth is being verified
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-950 to-green-950 flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
 
   return (
     <ErrorBoundary>
@@ -204,7 +213,7 @@ export default function Dashboard() {
           </h1>
           <div className="flex items-center space-x-4">
             <span className="text-white hidden sm:inline">
-              {LoggedInEmail} | {userRole}
+              {LoggedInEmail} | {displayRole}
             </span>
             <motion.button
               whileHover={{ scale: 1.1 }}
@@ -409,7 +418,6 @@ export default function Dashboard() {
                       <UserForm
                         onSuccess={() => {
                           setIsAddModalOpen(false);
-                          // Optionally refetch users here
                         }}
                         onCancel={() => setIsAddModalOpen(false)}
                       />
@@ -458,7 +466,6 @@ export default function Dashboard() {
                           user={selectedUser}
                           onSuccess={() => {
                             setIsEditModalOpen(false);
-                            // Optionally refetch users here
                           }}
                           onCancel={() => setIsEditModalOpen(false)}
                         />
