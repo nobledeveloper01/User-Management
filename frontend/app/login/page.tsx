@@ -42,12 +42,15 @@ export default function Login() {
 
       localStorage.setItem("token", token);
       localStorage.setItem("email", user.email);
-      
+
       // Wait for the Apollo Client store to reset
       await client.resetStore();
-      
-      showToast("Login successful! Redirecting...", "success");
-      router.push("/dashboard");
+
+      showToast("Login successful! Reloading...", "success");
+      // Force a full page reload instead of client-side navigation
+      if (typeof window !== 'undefined') {
+        window.location.href = '/dashboard';
+      }
     } catch (err) {
       showToast(err instanceof Error ? err.message : "Login failed", "error");
     }
