@@ -35,7 +35,7 @@ export default function Dashboard() {
   const [logoutLoading, setLogoutLoading] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
   const router = useRouter();
-  const { user, loading: authLoading, role: userRole } = useAuth();
+  const { loading: authLoading, role: userRole } = useAuth();
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
